@@ -1,0 +1,25 @@
+from flask import Flask, render_template
+from datetime import datetime, timedelta
+
+app = Flask(__name__)
+
+# Detalles de la invitación
+evento = "Fiesta Especial"
+fecha_evento = datetime(2024, 3, 10, 20, 0)  # Año, mes, día, hora, minutos
+
+# Ruta principal
+@app.route('/')
+def index():
+    ahora = datetime.now()
+    tiempo_restante = fecha_evento - ahora
+
+    # Formatear el tiempo restante
+    dias, segundos = tiempo_restante.days, tiempo_restante.seconds
+    horas, minutos = segundos // 3600, (segundos % 3600) // 60
+
+    tiempo_restante_formateado = f"{dias} días, {horas} horas y {minutos} minutos"
+
+    return render_template('invitacion.html', evento=evento, tiempo_restante=tiempo_restante_formateado)
+
+if __name__ == '__main__':
+    app.run(debug=True)
